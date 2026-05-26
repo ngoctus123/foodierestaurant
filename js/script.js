@@ -892,6 +892,46 @@ if (reservationForm) {
    ============================================= */
 const LAB10_SESSION_KEY = 'fm_customer_session';
 const LAB10_USERS_KEY   = 'fm_customer_users';
+const LAB10_DEMO_ACCOUNTS = [
+  { name: 'Nhân viên Demo', email: 'staff@foodiemenu.vn', phone: '0876785977', password: '123456', role: 'staff' },
+  { name: 'Admin Demo',     email: 'admin@foodiemenu.vn', phone: '0876785978', password: '123456', role: 'admin' },
+];
+
+function lab10LoadUsers() {
+  try {
+    const users = JSON.parse(localStorage.getItem(LAB10_USERS_KEY) || '[]');
+    return Array.isArray(users) ? users : [];
+  } catch {
+    return [];
+  }
+}
+
+function lab10SaveUsers(users) {
+  localStorage.setItem(LAB10_USERS_KEY, JSON.stringify(users));
+}
+
+function lab10SeedDemoAccounts() {
+  const users = lab10LoadUsers();
+  let changed = false;
+
+  LAB10_DEMO_ACCOUNTS.forEach(demo => {
+    const idx = users.findIndex(u => u.email === demo.email);
+    if (idx >= 0) {
+      const current = users[idx];
+      if (current.name !== demo.name || current.phone !== demo.phone || current.password !== demo.password || current.role !== demo.role) {
+        users[idx] = { ...current, ...demo };
+        changed = true;
+      }
+    } else {
+      users.push({ ...demo, registeredAt: Date.now() });
+      changed = true;
+    }
+  });
+
+  if (changed) lab10SaveUsers(users);
+}
+
+lab10SeedDemoAccounts();
 
 function lab10IsLoggedIn() {
   try { return !!JSON.parse(localStorage.getItem(LAB10_SESSION_KEY)); }
@@ -971,7 +1011,7 @@ if (loginForm) {
     }
     if (!ok) return;
 
-    const users = JSON.parse(localStorage.getItem(LAB10_USERS_KEY) || '[]');
+    const users = lab10LoadUsers();
     const found = users.find(u => u.email === emailVal || u.phone === emailVal);
     if (!found) {
       _lab10FieldError('loginEmail', 'loginEmailErr', 'Email hoặc số điện thoại chưa được đăng ký.');
@@ -983,7 +1023,7 @@ if (loginForm) {
     }
 
     const name = found.name;
-    const session = { name, email: found.email };
+    const session = { name, email: found.email, role: found.role || 'customer', loginAt: Date.now() };
     const remember = document.getElementById('rememberMe')?.checked;
     if (remember) {
       localStorage.setItem(LAB10_SESSION_KEY, JSON.stringify(session));
@@ -999,6 +1039,9 @@ if (loginForm) {
     setTimeout(() => {
       showToast('bi bi-person-check', 'Đăng nhập thành công! Chào mừng, ' + escapeHtml(name) + '.', 'primary');
     }, 350);
+    if (session.role === 'staff' || session.role === 'admin') {
+      setTimeout(() => { window.location.href = 'FoodieMenu/index.html'; }, 450);
+    }
   });
 }
 
@@ -1038,14 +1081,14 @@ if (registerForm) {
 
     if (!ok) return;
 
-    const users = JSON.parse(localStorage.getItem(LAB10_USERS_KEY) || '[]');
+    const users = lab10LoadUsers();
     if (users.some(u => u.email === email)) {
       _lab10FieldError('regEmail', 'regEmailErr', 'Email này đã được đăng ký rồi.');
       return;
     }
 
     users.push({ name, email, phone, password: pw, role: 'customer' });
-    localStorage.setItem(LAB10_USERS_KEY, JSON.stringify(users));
+    lab10SaveUsers(users);
 
     // KHÔNG tự đăng nhập — chuyển về tab Đăng nhập và pre-fill email
     const loginTab = document.getElementById('login-tab');
