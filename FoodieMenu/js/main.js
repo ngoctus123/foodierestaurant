@@ -875,7 +875,7 @@ async function placeOrder() {
       navigateTo('table');
       return;
     }
-    await _placeOrderForTable();
+    _showOrderTypeModal();
   } else {
     _showOrderTypeModal();
   }
@@ -962,6 +962,41 @@ async function _placeOrderTakeaway() {
   _showOrderSuccess('Đặt món mang về thành công! Vui lòng đến quầy FoodieMenu để nhận món. 🎉');
 }
 
+// Đặt hàng ăn tại quán (customer, không gắn bàn; nhân viên xử lý khi khách đến)
+async function _placeOrderDineIn() {
+  _isOrdering = true;
+  const orderItems = state.cart.map(i => ({
+    id:    i.id,
+    name:  i.name,
+    qty:   Math.max(1, Math.floor(Number(i.qty) || 1)),
+    price: Math.max(0, Number(i.price) || 0),
+  }));
+  const orderTotal = state.cart.reduce((s, i) => s + i.price * i.qty, 0);
+
+  await new Promise(r => setTimeout(r, 1200));
+
+  const session = getCustomerSession();
+  try {
+    await API.addOrder({
+      orderType:     'dine-in',
+      customerEmail: session?.email || '',
+      customerName:  session?.name  || '',
+      items:         orderItems,
+      total:         orderTotal,
+    });
+  } catch (e) {
+    _isOrdering = false;
+    Utils.showToast(e.message || 'Không thể lưu đơn hàng. Vui lòng thử lại!', 'error');
+    return;
+  }
+
+  _isOrdering = false;
+  state.cart = [];
+  Utils.clearCart();
+  syncCartBadge();
+  _showOrderSuccess('Đặt món ăn tại quán thành công! Khi đến quán, nhân viên sẽ hỗ trợ xếp bàn và phục vụ. 🎉');
+}
+
 // Đặt hàng giao về nhà (customer)
 async function _placeOrderDelivery(deliveryInfo, payment) {
   _isOrdering = true;
@@ -1013,13 +1048,19 @@ function _showOrderSuccess(msg) {
   Utils.showToast(msg);
 }
 
-// ── Modal: Mang về / Giao về nhà ──────────────────
+// ── Modal: Ăn tại quán / Mang về / Giao về nhà ──────────────────
 
 function _showOrderTypeModal() {
   const old = document.getElementById('orderTypeModal');
   if (old) { bootstrap.Modal.getInstance(old)?.dispose(); old.remove(); }
 
   const total = state.cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const session = getCustomerSession();
+  const isStaff = _isStaffOrAdmin(session);
+  const dineTitle = isStaff ? `Ăn tại quán${state.selectedTable ? ' - ' + state.selectedTable.name : ''}` : 'Ăn tại quán';
+  const dineDesc = isStaff
+    ? 'Gửi đơn theo bàn đang chọn, dùng cho khách ngồi tại quán'
+    : 'Đặt trước, khi đến quán nhân viên sẽ hỗ trợ xếp bàn';
 
   const el = document.createElement('div');
   el.className = 'modal fade';
@@ -1030,14 +1071,18 @@ function _showOrderTypeModal() {
     <div class="modal-dialog modal-dialog-centered" style="max-width:400px">
       <div class="modal-content fm-modal">
         <div class="modal-header border-0 pb-1">
-          <h5 class="fm-modal-title" style="font-size:17px">🍽 Bạn muốn nhận món thế nào?</h5>
+          <h5 class="fm-modal-title" style="font-size:17px">🍽 Chọn hình thức phục vụ</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"
             style="filter:invert(1) opacity(.55)"></button>
         </div>
         <div class="modal-body py-3">
           <p class="text-muted small mb-3">Tổng đơn: <strong style="color:var(--fm-amber)">${Utils.formatPrice(total)}</strong></p>
           <div class="d-flex flex-column gap-3">
-            <button class="btn fm-btn-primary w-100 py-3 fw-semibold" id="ot-dine-btn">
+            <button class="btn fm-btn-primary w-100 py-3 fw-semibold" id="ot-table-btn">
+              <i class="bi bi-cup-hot me-2"></i>${Utils.escapeHtml(dineTitle)}
+              <div class="small fw-normal opacity-75 mt-1">${Utils.escapeHtml(dineDesc)}</div>
+            </button>
+            <button class="btn fm-btn-outline w-100 py-3 fw-semibold" id="ot-takeaway-btn">
               <i class="bi bi-bag-check me-2"></i>Mang về
               <div class="small fw-normal opacity-75 mt-1">Đặt trước và đến quầy FoodieMenu nhận món</div>
             </button>
@@ -1052,7 +1097,20 @@ function _showOrderTypeModal() {
   document.body.appendChild(el);
 
   const modal = new bootstrap.Modal(el);
-  el.querySelector('#ot-dine-btn').addEventListener('click', () => {
+  el.querySelector('#ot-table-btn').addEventListener('click', async () => {
+    modal.hide();
+    if (isStaff) {
+      if (!state.selectedTable) {
+        Utils.showToast('Vui lòng chọn bàn trước khi order tại quán.', 'warning');
+        navigateTo('table');
+        return;
+      }
+      await _placeOrderForTable();
+    } else {
+      await _placeOrderDineIn();
+    }
+  });
+  el.querySelector('#ot-takeaway-btn').addEventListener('click', () => {
     modal.hide();
     _placeOrderTakeaway();
   });
