@@ -1515,7 +1515,7 @@ async function _renderReservationPanel() {
                 <span class="text-muted fw-normal">· ${Utils.escapeHtml(r.phone)}</span>
               </div>
               <div class="text-muted" style="font-size:0.78rem">
-                ${showDate ? Utils.escapeHtml(r.date) + ' · ' : ''}${Utils.escapeHtml(r.time)} · ${Utils.escapeHtml(String(r.guests))} khách
+                ${showDate ? Utils.escapeHtml(r.date) + ' · ' : ''}${Utils.escapeHtml(r.time)} · ${Utils.escapeHtml(r.guestLabel || String(r.guests) + ' khách')}
                 ${r.tableName ? ' · <strong>' + Utils.escapeHtml(r.tableName) + '</strong>' : ''}
                 ${r.note ? ' · ' + Utils.escapeHtml(r.note) : ''}
               </div>

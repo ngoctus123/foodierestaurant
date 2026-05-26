@@ -806,6 +806,13 @@ function _saveReservation(data) {
   } catch { /* không làm hỏng UI nếu localStorage đầy */ }
 }
 
+function _parseGuestCount(value) {
+  const text = String(value || '');
+  const nums = text.match(/\d+/g)?.map(Number).filter(Number.isFinite) || [];
+  if (nums.length === 0) return 1;
+  return Math.max(...nums);
+}
+
 const reservationForm = document.getElementById('reservationForm');
 
 if (reservationForm) {
@@ -820,6 +827,7 @@ if (reservationForm) {
     const phone  = document.getElementById('phone').value.trim();
     const email  = document.getElementById('email')?.value.trim() || '';
     const guests = document.getElementById('guests').value;
+    const guestLabel = document.getElementById('guests').selectedOptions[0]?.textContent.trim() || guests;
     const date   = document.getElementById('resDate').value;
     const time   = document.getElementById('resTime').value;
     const note   = document.getElementById('note')?.value.trim() || '';
@@ -837,7 +845,8 @@ if (reservationForm) {
     _saveReservation({
       id:        `R${Date.now()}`,
       name, phone, email,
-      guests:    Number(guests) || 1,
+      guests:    _parseGuestCount(guests),
+      guestLabel,
       date, time, note,
       status:    'pending',
       tableId:   null,
@@ -855,7 +864,7 @@ if (reservationForm) {
       [
         ['Khách hàng:', name],
         ['Số điện thoại:', phone],
-        ['Số khách:', guests + ' người'],
+        ['Số khách:', guestLabel],
         ['Ngày đặt:', formattedDate],
         ['Giờ đặt:', time],
         ...(note ? [['Ghi chú:', note]] : []),
