@@ -6,6 +6,8 @@
 // ── Hằng số ───────────────────────────────────────────
 const CATEGORIES = ['Tất cả', 'Khai vị', 'Món chính', 'Bánh mặn', 'Bánh tráng miệng', 'Tráng miệng', 'Đồ uống lạnh', 'Đồ uống nóng', 'Set/Combo'];
 const SELECTED_TABLE_KEY = 'fm_selected_table';
+// TESTER MODE: tạm bỏ chặn theo giờ hoạt động. Khi test xong đổi về false.
+const TESTING_BYPASS_STORE_HOURS = true;
 
 
 const RESTAURANT = {
@@ -153,6 +155,7 @@ function _getStoreStatus(now = new Date()) {
 }
 
 function _isStoreOpen() {
+  if (TESTING_BYPASS_STORE_HOURS) return true;
   return _getStoreStatus().isOpen;
 }
 
@@ -192,6 +195,7 @@ function _hideStoreStatusModal() {
 }
 
 function _showClosedNoticeIfNeeded() {
+  if (TESTING_BYPASS_STORE_HOURS) return;
   if (!_isStoreOpen()) _showStoreStatusModal();
 }
 

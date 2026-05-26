@@ -654,6 +654,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 /* --- Min reservation date: use local date, not UTC --- */
 const resDateInput = document.getElementById('resDate');
 const resTimeInput = document.getElementById('resTime');
+// TESTER MODE: tạm cho tester chọn mọi khung giờ đặt bàn. Khi test xong đổi về false.
+const TESTING_BYPASS_RESERVATION_TIME_CHECK = true;
 
 function _landingLocalDateString(date = new Date()) {
   const yyyy = date.getFullYear();
@@ -668,6 +670,7 @@ function _reservationTimeToMinutes(value) {
 }
 
 function _isPastReservationSlot(dateValue, timeValue) {
+  if (TESTING_BYPASS_RESERVATION_TIME_CHECK) return false;
   if (!dateValue || !timeValue || dateValue !== _landingLocalDateString()) return false;
   const slotMinutes = _reservationTimeToMinutes(timeValue);
   const now = new Date();
