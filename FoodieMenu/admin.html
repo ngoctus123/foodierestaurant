@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FoodieMenu — Quản trị Admin</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════
+       Màn hình đăng nhập (ẩn khi đã xác thực)
+  ══════════════════════════════════════════════════════ -->
+  <div id="login-screen" class="fm-login-screen">
+
+    <!-- Nền mờ ảnh thực phẩm -->
+    <div class="fm-login-bg" aria-hidden="true"></div>
+
+    <div class="fm-login-card">
+
+      <!-- Logo -->
+      <div class="text-center mb-4">
+        <div class="fm-login-logo">Foodie<em>Menu</em></div>
+        <div class="fm-login-subtitle">⚙ Admin Panel</div>
+      </div>
+
+      <!-- Thông báo lỗi (ẩn mặc định) -->
+      <div id="login-error" class="fm-login-error d-none" role="alert">
+        <i class="bi bi-exclamation-circle-fill me-2"></i>
+        Tên đăng nhập hoặc mật khẩu không đúng.
+      </div>
+
+      <!-- Form đăng nhập -->
+      <form id="login-form" novalidate>
+
+        <!-- Tên đăng nhập -->
+        <div class="mb-3">
+          <label class="fm-label" for="login-username">Tên đăng nhập</label>
+          <div class="fm-login-input-wrap">
+            <i class="bi bi-person fm-login-input-icon" aria-hidden="true"></i>
+            <input
+              type="text"
+              id="login-username"
+              class="form-control fm-input fm-login-input"
+              placeholder="admin"
+              autocomplete="username"
+              required
+            >
+          </div>
+        </div>
+
+        <!-- Mật khẩu -->
+        <div class="mb-4">
+          <label class="fm-label" for="login-password">Mật khẩu</label>
+          <div class="fm-login-input-wrap">
+            <i class="bi bi-lock fm-login-input-icon" aria-hidden="true"></i>
+            <input
+              type="password"
+              id="login-password"
+              class="form-control fm-input fm-login-input"
+              placeholder="••••••••"
+              autocomplete="current-password"
+              required
+            >
+          </div>
+        </div>
+
+        <!-- Nút đăng nhập -->
+        <button type="submit" class="btn fm-btn-primary w-100 py-2 fs-6">
+          Đăng nhập
+        </button>
+
+      </form>
+
+      <!-- Demo credentials notice -->
+      <div class="fm-demo-credentials" role="note">
+        <div class="fm-demo-credentials-title">
+          <i class="bi bi-exclamation-triangle-fill me-1"></i>DEMO — thông tin đăng nhập
+        </div>
+        <div class="fm-demo-credentials-row">
+          <span>Tên đăng nhập</span><code>admin</code>
+        </div>
+        <div class="fm-demo-credentials-row">
+          <span>Mật khẩu</span><code>admin123</code>
+        </div>
+        <div class="fm-demo-credentials-note">
+          Dữ liệu lưu local — không dùng cho môi trường production.
+        </div>
+      </div>
+
+      <!-- Link quay về trang khách -->
+      <p class="text-center mt-3 mb-0" style="font-size:13px; color:var(--fm-muted)">
+        Bạn là khách hàng?
+        <a href="index.html" style="color:var(--fm-primary); font-weight:600; text-decoration:none">
+          Xem thực đơn <i class="bi bi-arrow-right"></i>
+        </a>
+      </p>
+
+    </div><!-- /fm-login-card -->
+  </div><!-- /login-screen -->
+
+
+  <!-- ══════════════════════════════════════════════════
+       Giao diện Admin (ẩn cho đến khi đăng nhập)
+  ══════════════════════════════════════════════════════ -->
+  <div id="admin-app" class="d-none">
+
+  <!-- ── Admin Navbar ────────────────────────────────── -->
+  <nav class="navbar fm-navbar sticky-top">
+    <div class="container-xl d-flex align-items-center justify-content-between w-100">
+
+      <div class="d-flex align-items-center gap-3">
+        <a class="fm-logo" href="index.html">Foodie<em>Menu</em></a>
+        <span class="fm-admin-badge d-none d-sm-inline">⚙ Admin Panel</span>
+      </div>
+
+      <div class="d-flex align-items-center gap-2">
+        <a href="index.html" class="btn fm-navlink">
+          <i class="bi bi-shop me-1"></i>
+          <span class="d-none d-sm-inline">Xem cửa hàng</span>
+        </a>
+        <button id="logout-btn" class="btn fm-btn-logout" type="button" title="Đăng xuất">
+          <i class="bi bi-box-arrow-right me-1"></i>
+          <span class="d-none d-sm-inline">Đăng xuất</span>
+        </button>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- ── Demo security banner ───────────────────────── -->
+  <div class="fm-demo-banner" id="demo-banner" role="alert">
+    <div class="container-xl d-flex align-items-center justify-content-between gap-3 flex-wrap">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-shield-exclamation fs-5"></i>
+        <span>
+          <strong>Môi trường DEMO.</strong>
+          Xác thực chỉ là client-side — bất kỳ ai cũng có thể đọc dữ liệu qua DevTools Console.
+          Không dùng cho production thật.
+        </span>
+      </div>
+      <button type="button" class="btn-close btn-close-white flex-shrink-0"
+        aria-label="Đóng" onclick="this.closest('#demo-banner').style.display='none'"></button>
+    </div>
+  </div>
+
+  <!-- ── Admin App ───────────────────────────────────── -->
+  <div class="container-xl py-4 px-3 px-md-4">
+
+    <!-- Tab bar -->
+    <div class="fm-admin-section-tab mb-4">
+      <button class="fm-admin-tab-btn active" data-admin-tab="menu" onclick="switchAdminSection('menu')">
+        🍜 Thực đơn
+      </button>
+      <button class="fm-admin-tab-btn" data-admin-tab="tables" onclick="switchAdminSection('tables')">
+        🍽 Quản lý bàn
+      </button>
+    </div>
+
+    <!-- ── Section: Thực đơn ──────────────────────── -->
+    <div id="section-menu">
+
+      <!-- Header -->
+      <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
+        <div>
+          <h2 class="fm-section-title mb-1">Quản lý Thực đơn</h2>
+          <p class="text-muted small mb-0">Thêm, sửa, xóa các món ăn trong hệ thống</p>
+        </div>
+        <div class="d-flex gap-2 flex-wrap">
+          <button class="btn fm-btn-outline d-flex align-items-center gap-2"
+            onclick="confirmReset()" title="Khôi phục toàn bộ về thực đơn mặc định">
+            <i class="bi bi-arrow-counterclockwise"></i>
+            <span class="d-none d-sm-inline">Reset dữ liệu</span>
+          </button>
+          <button class="btn fm-btn-primary d-flex align-items-center gap-2" onclick="openAddModal()">
+            <i class="bi bi-plus-lg"></i> Thêm món mới
+          </button>
+        </div>
+      </div>
+
+      <!-- Thống kê -->
+      <div class="row g-3 mb-4" id="admin-stats">
+        <div class="col-12 text-center py-3">
+          <div class="spinner-border text-warning" role="status"></div>
+        </div>
+      </div>
+
+      <!-- Bảng sản phẩm -->
+      <div class="fm-table-wrap">
+        <div class="table-responsive">
+          <table class="table fm-table mb-0">
+            <thead>
+              <tr>
+                <th>Ảnh</th>
+                <th>Tên món</th>
+                <th>Danh mục</th>
+                <th>Giá</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="table-body">
+              <tr>
+                <td colspan="6" class="text-center py-5">
+                  <div class="spinner-border text-warning" role="status"></div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /section-menu -->
+
+    <!-- ── Section: Quản lý bàn ───────────────────── -->
+    <div id="section-tables" class="d-none">
+
+      <!-- Header -->
+      <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
+        <div>
+          <h2 class="fm-section-title mb-1">Quản lý bàn</h2>
+          <p class="text-muted small mb-0">Thêm, sửa, ẩn/hiện bàn và theo dõi trạng thái phục vụ</p>
+        </div>
+        <div class="d-flex gap-2 flex-wrap">
+          <button class="btn fm-btn-outline d-flex align-items-center gap-2" onclick="confirmResetTables()">
+            <i class="bi bi-arrow-counterclockwise"></i>
+            <span class="d-none d-sm-inline">Reset bàn</span>
+          </button>
+          <button class="btn fm-btn-primary d-flex align-items-center gap-2" onclick="openAddTableModal()">
+            <i class="bi bi-plus-lg"></i> Thêm bàn
+          </button>
+        </div>
+      </div>
+
+      <!-- Grid bàn -->
+      <div id="tables-admin-grid">
+        <div class="text-center py-4">
+          <div class="spinner-border text-warning" role="status"></div>
+        </div>
+      </div>
+
+    </div><!-- /section-tables -->
+
+  </div><!-- /container -->
+
+
+  <!-- ══════════════════════════════════════════════════
+       Modal: Thêm / Chỉnh sửa món ăn
+  ══════════════════════════════════════════════════════ -->
+  <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content fm-modal">
+
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fm-modal-title" id="modal-title">Thêm món mới</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+        </div>
+
+        <div class="modal-body pt-3">
+
+          <!-- Preview ảnh (ẩn mặc định) -->
+          <div id="img-preview" class="mb-3 d-none">
+            <img id="preview-img" src="" alt="Preview ảnh món"
+              class="w-100 rounded-3" style="height:130px; object-fit:cover;">
+          </div>
+
+          <!-- Tên món -->
+          <div class="mb-3">
+            <label class="fm-label" for="f-name">Tên món *</label>
+            <input type="text" id="f-name" class="form-control fm-input"
+              placeholder="VD: Phở Bò Đặc Biệt" autocomplete="off">
+          </div>
+
+          <!-- Giá + Danh mục -->
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <label class="fm-label" for="f-price">Giá (VNĐ) *</label>
+              <input type="number" id="f-price" class="form-control fm-input"
+                placeholder="65000" min="0">
+            </div>
+            <div class="col-6">
+              <label class="fm-label" for="f-category">Danh mục</label>
+              <select id="f-category" class="form-select fm-input">
+                <option>Khai vị</option>
+                <option>Món chính</option>
+                <option>Bánh mặn</option>
+                <option>Bánh tráng miệng</option>
+                <option>Tráng miệng</option>
+                <option>Đồ uống lạnh</option>
+                <option>Đồ uống nóng</option>
+                <option>Set/Combo</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- URL ảnh -->
+          <div class="mb-3">
+            <label class="fm-label" for="f-image">URL ảnh</label>
+            <input type="url" id="f-image" class="form-control fm-input"
+              placeholder="https://images.unsplash.com/...">
+            <div class="form-text text-muted" style="font-size:12px">
+              Để trống sẽ dùng ảnh mặc định
+            </div>
+          </div>
+
+          <!-- Mô tả ngắn -->
+          <div class="mb-3">
+            <label class="fm-label" for="f-desc">Mô tả ngắn</label>
+            <textarea id="f-desc" class="form-control fm-input" rows="2"
+              placeholder="Mô tả ngắn hiển thị trên card..."></textarea>
+          </div>
+
+          <!-- Mô tả chi tiết -->
+          <div class="mb-3">
+            <label class="fm-label" for="f-detail">Mô tả chi tiết</label>
+            <textarea id="f-detail" class="form-control fm-input" rows="3"
+              placeholder="Mô tả chi tiết hiển thị trong modal..."></textarea>
+          </div>
+
+          <!-- Thành phần -->
+          <div class="mb-3">
+            <label class="fm-label" for="f-ingredients">Thành phần / Nguyên liệu</label>
+            <input type="text" id="f-ingredients" class="form-control fm-input"
+              placeholder="VD: Bánh phở, thịt bò, hành, tiêu...">
+          </div>
+
+          <!-- Tags -->
+          <div class="mb-3">
+            <label class="fm-label">Tags</label>
+            <div class="d-flex flex-wrap gap-2 mt-1">
+              <label class="fm-tag-check">
+                <input type="checkbox" id="f-tag-hot" value="Bán chạy"> 🔥 Bán chạy
+              </label>
+              <label class="fm-tag-check">
+                <input type="checkbox" id="f-tag-new" value="Món mới"> ✨ Món mới
+              </label>
+              <label class="fm-tag-check">
+                <input type="checkbox" id="f-tag-sale" value="Ưu đãi"> 🏷 Ưu đãi
+              </label>
+            </div>
+          </div>
+
+          <!-- Trạng thái -->
+          <div class="mb-1">
+            <label class="fm-label">Trạng thái</label>
+            <div class="d-flex gap-2 mt-1">
+              <button type="button" id="btn-available"
+                class="btn flex-fill fm-status-btn-active"
+                onclick="setFormStatus(true)">
+                ✅ Còn phục vụ
+              </button>
+              <button type="button" id="btn-soldout"
+                class="btn flex-fill fm-status-btn-inactive"
+                onclick="setFormStatus(false)">
+                ❌ Hết món
+              </button>
+            </div>
+          </div>
+
+        </div><!-- /modal-body -->
+
+        <div class="modal-footer border-0 pt-0">
+          <button class="btn fm-btn-outline" data-bs-dismiss="modal">Hủy</button>
+          <button class="btn fm-btn-primary" id="save-btn" onclick="saveProduct()">
+            <span id="save-btn-text">Thêm món</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════
+       Modal: Xác nhận xóa
+  ══════════════════════════════════════════════════════ -->
+  <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content fm-modal">
+
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fm-modal-title" id="confirm-modal-title" style="font-size:18px">
+            🗑 Xác nhận xóa
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+          <p class="text-muted" id="confirm-modal-body" style="font-size:14px">
+            Bạn có chắc muốn xóa món này không?
+          </p>
+        </div>
+
+        <div class="modal-footer border-0 pt-0">
+          <button class="btn fm-btn-outline btn-sm" data-bs-dismiss="modal">Hủy</button>
+          <button class="btn fm-btn-danger btn-sm px-3" id="confirm-delete-btn">
+            Xóa ngay
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════
+       Modal: Thêm / Chỉnh sửa bàn
+  ══════════════════════════════════════════════════════ -->
+  <div class="modal fade" id="tableModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content fm-modal">
+
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fm-modal-title" id="table-modal-title">Thêm bàn</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body pt-3">
+          <div class="mb-3">
+            <label class="fm-label" for="f-table-name">Tên bàn *</label>
+            <input type="text" id="f-table-name" class="form-control fm-input"
+              placeholder="VD: Bàn 11" autocomplete="off">
+          </div>
+          <div class="mb-1">
+            <label class="fm-label">Hiển thị với khách</label>
+            <div class="d-flex gap-2 mt-1">
+              <button type="button" id="btn-table-visible"
+                class="btn flex-fill fm-status-btn-active"
+                onclick="setTableFormVisible(true)">
+                👁 Hiện bàn
+              </button>
+              <button type="button" id="btn-table-hidden"
+                class="btn flex-fill fm-status-btn-inactive"
+                onclick="setTableFormVisible(false)">
+                🚫 Ẩn bàn
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer border-0 pt-0">
+          <button class="btn fm-btn-outline" data-bs-dismiss="modal">Hủy</button>
+          <button class="btn fm-btn-primary" onclick="saveTable()">
+            <span id="table-save-btn-text">Thêm bàn</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  </div><!-- /admin-app -->
+
+
+  <!-- ── Toast container (luôn hiển thị) ───────────── -->
+  <div id="toast-container"
+       class="position-fixed bottom-0 end-0 p-3"
+       style="z-index:9999"></div>
+
+  <!-- ── Scripts (thứ tự quan trọng) ──────────────────
+       1. Bootstrap  2. utils  3. api  4. auth  5. admin  -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/admin.js"></script>
+
+</body>
+</html>

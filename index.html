@@ -1,0 +1,874 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FoodieMenu - Thực Đơn Online Đậm Chất Việt Nam</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- ===== HEADER / NAVBAR ===== -->
+<header>
+  <nav class="navbar navbar-expand-lg fixed-top" id="mainNavbar" aria-label="Điều hướng chính">
+    <div class="container">
+      <!-- Brand -->
+      <a class="navbar-brand" href="#home">
+        <i class="bi bi-egg-fried text-warning me-2"></i>
+        <span>FoodieMenu</span>
+      </a>
+
+      <!-- Hamburger toggle (mobile) -->
+      <button class="navbar-toggler border-0" type="button"
+              data-bs-toggle="collapse" data-bs-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Mở menu điều hướng">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Nav links -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#home">Trang chủ</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#featured">Món nổi bật</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#menu">Thực đơn</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#reviews">Đánh giá</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#contact">Liên hệ</a>
+          </li>
+        </ul>
+        <!-- CTA buttons -->
+        <div class="d-flex align-items-center gap-2 mt-2 mt-lg-0">
+          <span id="lab10-auth-chip"></span>
+          <a href="FoodieMenu/index.html" class="btn btn-warning btn-sm fw-semibold">
+            <i class="bi bi-shop me-1"></i>Đặt món ngay
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- ===== MAIN CONTENT ===== -->
+<main>
+
+  <!-- HERO / BANNER SECTION -->
+  <section id="home" class="hero-section" aria-label="Banner trang chủ">
+    <div class="hero-overlay">
+      <div class="container h-100">
+        <div class="row h-100 align-items-center">
+          <div class="col-lg-7 col-md-9">
+            <span class="badge bg-warning text-dark mb-3 px-3 py-2 fs-6">
+              <i class="bi bi-star-fill me-1"></i> FoodieMenu — Thực Đơn Online #1 Việt Nam
+            </span>
+            <h1 class="hero-title">Hương Vị Đích Thực<br><span class="text-warning">Đậm Chất Việt Nam</span></h1>
+            <p class="hero-subtitle">
+              Thực đơn online đậm chất Việt Nam — khám phá hơn 30 món ăn truyền thống
+              được chế biến từ nguyên liệu tươi ngon nhất, mang đến trải nghiệm ẩm thực tuyệt vời.
+            </p>
+            <div class="d-flex flex-wrap gap-3 mt-4">
+              <a href="#menu" class="btn btn-warning btn-lg fw-semibold px-4">
+                <i class="bi bi-journal-bookmark me-2"></i>Xem thực đơn
+              </a>
+              <a href="FoodieMenu/index.html" class="btn btn-outline-light btn-lg px-4">
+                <i class="bi bi-calendar-plus me-2"></i>Đặt món / Chọn bàn
+              </a>
+            </div>
+            <div class="hero-stats mt-5 d-flex flex-wrap gap-4">
+              <div class="stat-item">
+                <span class="stat-num">500+</span>
+                <span class="stat-label">Khách hàng/ngày</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-num">34+</span>
+                <span class="stat-label">Món ăn</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-num">10+</span>
+                <span class="stat-label">Năm kinh nghiệm</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEARCH SECTION -->
+  <section class="search-section py-4" aria-label="Tìm kiếm món ăn">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="search-box">
+            <h5 class="text-center mb-3 fw-semibold">
+              <i class="bi bi-search me-2 text-warning"></i>Tìm kiếm món ăn
+            </h5>
+            <div class="input-group input-group-lg shadow-sm">
+              <span class="input-group-text bg-white border-end-0">
+                <i class="bi bi-search text-muted"></i>
+              </span>
+              <input type="text" class="form-control border-start-0 ps-0" id="searchInput"
+                     placeholder="Nhập tên món ăn... (VD: Phở, Gỏi cuốn, Trà đào)"
+                     aria-label="Tìm kiếm món ăn">
+              <button class="btn btn-warning px-4 fw-semibold" id="searchBtn" type="button">
+                Tìm
+              </button>
+            </div>
+            <div id="searchResults" class="mt-2 ps-1"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED DISHES SECTION -->
+  <section id="featured" class="py-5" aria-label="Món nổi bật">
+    <div class="container">
+      <div class="section-header text-center mb-5">
+        <span class="section-badge">Đặc sản</span>
+        <h2 class="section-title">Món Nổi Bật</h2>
+        <p class="section-subtitle">Những món ăn được yêu thích nhất tại FoodieMenu</p>
+      </div>
+
+      <!-- JS renders featured cards here -->
+      <div id="featuredGrid" class="row g-4"></div>
+    </div>
+  </section>
+
+  <!-- ALERT PROMO -->
+  <div class="container mb-2">
+    <div class="alert alert-warning alert-dismissible fade show d-flex align-items-center" role="alert">
+      <i class="bi bi-fire fs-5 me-3 flex-shrink-0"></i>
+      <div>
+        <strong>Ưu đãi hôm nay!</strong> Giảm 20% tất cả Set/Combo khi đặt bàn trước 18:00.
+        Áp dụng từ thứ 2 đến thứ 6 hàng tuần. &nbsp;
+        <a href="FoodieMenu/index.html" class="alert-link">Đặt ngay →</a>
+      </div>
+      <button type="button" class="btn-close ms-auto flex-shrink-0" data-bs-dismiss="alert" aria-label="Đóng"></button>
+    </div>
+  </div>
+
+  <!-- MENU SECTION -->
+  <section id="menu" class="py-5 bg-light" aria-label="Thực đơn">
+    <div class="container">
+      <div class="section-header text-center mb-5">
+        <span class="section-badge">Đa dạng</span>
+        <h2 class="section-title">Thực Đơn FoodieMenu</h2>
+        <p class="section-subtitle">Tất cả chế biến từ nguyên liệu tươi ngon nhất mỗi ngày</p>
+      </div>
+
+      <!-- Category filter tabs -->
+      <div class="fm-menu-tabs-wrap mb-4">
+        <ul class="fm-menu-tabs" id="menuTabs" role="tablist">
+          <li><button class="fm-tab active" data-category="Tất cả"><i class="bi bi-grid-3x3-gap-fill"></i>Tất cả</button></li>
+          <li><button class="fm-tab" data-category="Khai vị"><i class="bi bi-stars"></i>Khai vị</button></li>
+          <li><button class="fm-tab" data-category="Món chính"><i class="bi bi-fire"></i>Món chính</button></li>
+          <li><button class="fm-tab" data-category="Bánh mặn"><i class="bi bi-pie-chart-fill"></i>Bánh mặn</button></li>
+          <li><button class="fm-tab" data-category="Bánh tráng miệng"><i class="bi bi-cake2"></i>Bánh tráng miệng</button></li>
+          <li><button class="fm-tab" data-category="Tráng miệng"><i class="bi bi-gem"></i>Tráng miệng</button></li>
+          <li><button class="fm-tab" data-category="Đồ uống lạnh"><i class="bi bi-snow2"></i>Đồ uống lạnh</button></li>
+          <li><button class="fm-tab" data-category="Đồ uống nóng"><i class="bi bi-cup-hot-fill"></i>Đồ uống nóng</button></li>
+          <li><button class="fm-tab" data-category="Set/Combo"><i class="bi bi-collection-fill"></i>Set/Combo</button></li>
+        </ul>
+      </div>
+
+      <!-- Price filter + Sort row -->
+      <div class="fm-filter-row mb-4">
+        <div class="fm-filter-field">
+          <i class="bi bi-funnel-fill fm-filter-icon"></i>
+          <select class="fm-select" id="priceFilter" aria-label="Lọc theo giá">
+            <option value="all">Tất cả mức giá</option>
+            <option value="under50">Dưới 50.000đ</option>
+            <option value="50to100">50.000đ – 100.000đ</option>
+            <option value="over100">Trên 100.000đ</option>
+          </select>
+        </div>
+        <div class="fm-filter-field">
+          <i class="bi bi-sort-down fm-filter-icon"></i>
+          <select class="fm-select" id="sortMenu" aria-label="Sắp xếp">
+            <option value="default">Sắp xếp mặc định</option>
+            <option value="asc">Giá: Thấp đến Cao</option>
+            <option value="desc">Giá: Cao đến Thấp</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- JS renders menu cards here -->
+      <div class="row g-3" id="menuGrid"></div>
+
+      <!-- No results message -->
+      <div id="noResults" class="text-center py-5 d-none">
+        <i class="bi bi-search display-4 text-muted"></i>
+        <p class="text-muted mt-3 fs-5">Không tìm thấy món ăn phù hợp.</p>
+        <button class="btn btn-outline-warning btn-sm" onclick="resetMenu()">Xem tất cả món</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMBO / SET TABLE SECTION -->
+  <section class="py-5" aria-label="Set và Combo khuyến mãi">
+    <div class="container">
+      <div class="section-header text-center mb-5">
+        <span class="section-badge">Tiết kiệm</span>
+        <h2 class="section-title">Set &amp; Combo FoodieMenu</h2>
+        <p class="section-subtitle">Tiết kiệm hơn khi chọn set — ưu đãi có giới hạn!</p>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-hover table-striped align-middle combo-table">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Tên Set/Combo</th>
+              <th scope="col">Mô tả</th>
+              <th scope="col">Giá</th>
+              <th scope="col">Ưu đãi</th>
+              <th scope="col">Trạng thái</th>
+              <th scope="col">Đặt món</th>
+            </tr>
+          </thead>
+          <!-- JS renders rows here -->
+          <tbody id="comboTableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="text-center mt-4">
+        <a href="FoodieMenu/index.html" class="btn btn-warning btn-lg fw-semibold px-5">
+          <i class="bi bi-shop me-2"></i>Xem toàn bộ thực đơn &amp; Đặt bàn
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS SECTION -->
+  <section id="reviews" class="py-5 bg-light" aria-label="Đánh giá khách hàng">
+    <div class="container">
+      <div class="section-header text-center mb-5">
+        <span class="section-badge">Phản hồi</span>
+        <h2 class="section-title">Khách Hàng Nói Gì?</h2>
+        <p class="section-subtitle">Hơn 2.000 đánh giá 5 sao từ thực khách trên toàn quốc</p>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-4 col-md-6">
+          <div class="review-card card border-0 shadow-sm h-100 p-4">
+            <div class="d-flex align-items-center mb-3">
+              <img src="https://i.pravatar.cc/60?img=1" class="rounded-circle me-3"
+                   width="55" height="55" alt="Ảnh đại diện Nguyễn Thị Mai">
+              <div>
+                <h6 class="mb-0 fw-semibold">Nguyễn Thị Mai</h6>
+                <small class="text-muted"><i class="bi bi-geo-alt me-1"></i>Hà Nội</small>
+              </div>
+            </div>
+            <div class="stars mb-3">
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star-fill text-warning"></i>
+            </div>
+            <p class="card-text text-muted flex-grow-1">
+              "Phở Bò Đặc Biệt ở đây ngon tuyệt vời! Nước dùng thơm đậm đà, thịt mềm ngon.
+              FoodieMenu đặt bàn online rất tiện. Nhất định sẽ quay lại!"
+            </p>
+            <small class="text-muted mt-2 d-block">
+              <i class="bi bi-calendar3 me-1"></i>15/05/2026
+            </small>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="review-card card border-0 shadow-sm h-100 p-4">
+            <div class="d-flex align-items-center mb-3">
+              <img src="https://i.pravatar.cc/60?img=12" class="rounded-circle me-3"
+                   width="55" height="55" alt="Ảnh đại diện Trần Văn Hùng">
+              <div>
+                <h6 class="mb-0 fw-semibold">Trần Văn Hùng</h6>
+                <small class="text-muted"><i class="bi bi-geo-alt me-1"></i>TP. Hồ Chí Minh</small>
+              </div>
+            </div>
+            <div class="stars mb-3">
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star-half text-warning"></i>
+            </div>
+            <p class="card-text text-muted flex-grow-1">
+              "Cơm Tấm Sườn Bì Chả ngon hết sảy, đúng vị Sài Gòn. Set Văn Phòng Nhanh
+              phục vụ đúng 20 phút. Combo giá cả hợp lý. Sẽ giới thiệu cho bạn bè!"
+            </p>
+            <small class="text-muted mt-2 d-block">
+              <i class="bi bi-calendar3 me-1"></i>12/05/2026
+            </small>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="review-card card border-0 shadow-sm h-100 p-4">
+            <div class="d-flex align-items-center mb-3">
+              <img src="https://i.pravatar.cc/60?img=25" class="rounded-circle me-3"
+                   width="55" height="55" alt="Ảnh đại diện Lê Thị Hương">
+              <div>
+                <h6 class="mb-0 fw-semibold">Lê Thị Hương</h6>
+                <small class="text-muted"><i class="bi bi-geo-alt me-1"></i>Đà Nẵng</small>
+              </div>
+            </div>
+            <div class="stars mb-3">
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star-fill text-warning"></i>
+            </div>
+            <p class="card-text text-muted flex-grow-1">
+              "Đặt bàn qua FoodieMenu rất tiện lợi. Bún Bò Huế Cay vừa miệng, thơm ngon.
+              Trà Sen Hà Nội uống rất thanh. Hoàn toàn hài lòng!"
+            </p>
+            <small class="text-muted mt-2 d-block">
+              <i class="bi bi-calendar3 me-1"></i>08/05/2026
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESERVATION FORM + CONTACT SECTION -->
+  <section id="contact" class="py-5" aria-label="Đặt bàn và liên hệ">
+    <div class="container">
+      <div class="row g-5">
+
+        <!-- Reservation Form -->
+        <div class="col-lg-7">
+          <div class="section-header mb-4">
+            <span class="section-badge">Đặt chỗ</span>
+            <h2 class="section-title">Đặt Bàn Nhanh</h2>
+            <p class="section-subtitle text-start">Điền thông tin bên dưới — nhân viên sẽ xác nhận trong 15 phút.
+              Hoặc <a href="FoodieMenu/index.html" class="text-warning fw-semibold">chọn bàn trực tiếp trên FoodieMenu</a>.</p>
+          </div>
+
+          <form id="reservationForm" class="needs-validation" novalidate>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="fullName" class="form-label fw-semibold">
+                  Họ và tên <span class="text-danger">*</span>
+                </label>
+                <input type="text" class="form-control" id="fullName"
+                       placeholder="Nguyễn Văn A" required minlength="3">
+                <div class="invalid-feedback">Vui lòng nhập họ tên (ít nhất 3 ký tự).</div>
+              </div>
+              <div class="col-md-6">
+                <label for="phone" class="form-label fw-semibold">
+                  Số điện thoại <span class="text-danger">*</span>
+                </label>
+                <input type="tel" class="form-control" id="phone"
+                       placeholder="0876 785 977" pattern="[0-9]{10,11}" required>
+                <div class="invalid-feedback">Vui lòng nhập số điện thoại hợp lệ (10-11 số).</div>
+              </div>
+              <div class="col-md-6">
+                <label for="email" class="form-label fw-semibold">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="example@email.com">
+                <div class="invalid-feedback">Email không hợp lệ.</div>
+              </div>
+              <div class="col-md-6">
+                <label for="guests" class="form-label fw-semibold">
+                  Số khách <span class="text-danger">*</span>
+                </label>
+                <select class="form-select" id="guests" required>
+                  <option value="">Chọn số khách</option>
+                  <option value="1 người">1 người</option>
+                  <option value="2 người">2 người</option>
+                  <option value="3-4 người">3-4 người</option>
+                  <option value="5-6 người">5-6 người</option>
+                  <option value="7+ người">7+ người (đoàn lớn)</option>
+                </select>
+                <div class="invalid-feedback">Vui lòng chọn số khách.</div>
+              </div>
+              <div class="col-md-6">
+                <label for="resDate" class="form-label fw-semibold">
+                  Ngày đặt <span class="text-danger">*</span>
+                </label>
+                <input type="date" class="form-control" id="resDate" required>
+                <div class="invalid-feedback">Vui lòng chọn ngày đặt bàn.</div>
+              </div>
+              <div class="col-md-6">
+                <label for="resTime" class="form-label fw-semibold">
+                  Giờ đặt <span class="text-danger">*</span>
+                </label>
+                <select class="form-select" id="resTime" required>
+                  <option value="">Chọn giờ</option>
+                  <option value="08:00">08:00 - Sáng</option>
+                  <option value="09:00">09:00 - Sáng</option>
+                  <option value="10:00">10:00 - Sáng</option>
+                  <option value="11:00">11:00 - Sáng</option>
+                  <option value="12:00">12:00 - Trưa</option>
+                  <option value="13:00">13:00 - Chiều</option>
+                  <option value="17:00">17:00 - Chiều</option>
+                  <option value="18:00">18:00 - Tối</option>
+                  <option value="19:00">19:00 - Tối</option>
+                  <option value="20:00">20:00 - Tối</option>
+                  <option value="21:00">21:00 - Tối</option>
+                  <option value="22:00">22:00 - Tối</option>
+                </select>
+                <div class="invalid-feedback">Vui lòng chọn giờ.</div>
+              </div>
+              <div class="col-12">
+                <label for="note" class="form-label fw-semibold">Ghi chú</label>
+                <textarea class="form-control" id="note" rows="3"
+                          placeholder="Yêu cầu đặc biệt (VD: bàn riêng, không cay, dị ứng thực phẩm...)"></textarea>
+              </div>
+              <div class="col-12">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                  <label class="form-check-label" for="agreeTerms">
+                    Tôi đồng ý với <a href="#" class="text-warning">điều khoản</a>
+                    và <a href="#" class="text-warning">chính sách đặt bàn</a>
+                  </label>
+                  <div class="invalid-feedback">Vui lòng đồng ý với điều khoản để tiếp tục.</div>
+                </div>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-warning btn-lg w-100 fw-semibold" id="submitBtn">
+                  <i class="bi bi-calendar-check me-2"></i>Xác nhận đặt bàn
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="col-lg-5">
+          <div class="section-header mb-4">
+            <span class="section-badge">Thông tin</span>
+            <h2 class="section-title">Liên Hệ</h2>
+          </div>
+
+          <div class="contact-info">
+            <div class="contact-item d-flex align-items-start mb-4">
+              <i class="bi bi-geo-alt-fill text-warning fs-4 me-3 flex-shrink-0 mt-1"></i>
+              <div>
+                <h6 class="fw-semibold mb-1">Địa chỉ</h6>
+                <p class="text-muted mb-0">Trường Đại học Đại Nam,<br>Số 1 Phố Xốm, Phú Lãm, Hà Đông, Hà Nội</p>
+              </div>
+            </div>
+            <div class="contact-item d-flex align-items-start mb-4">
+              <i class="bi bi-telephone-fill text-warning fs-4 me-3 flex-shrink-0 mt-1"></i>
+              <div>
+                <h6 class="fw-semibold mb-1">Điện thoại</h6>
+                <p class="text-muted mb-0">
+                  <a href="tel:0876785977" class="text-decoration-none text-muted">0876 785 977</a>
+                </p>
+              </div>
+            </div>
+            <div class="contact-item d-flex align-items-start mb-4">
+              <i class="bi bi-envelope-fill text-warning fs-4 me-3 flex-shrink-0 mt-1"></i>
+              <div>
+                <h6 class="fw-semibold mb-1">Email</h6>
+                <p class="text-muted mb-0">
+                  <a href="mailto:tule2077@gmail.com" class="text-decoration-none text-muted">tule2077@gmail.com</a>
+                </p>
+              </div>
+            </div>
+            <div class="contact-item d-flex align-items-start mb-4">
+              <i class="bi bi-clock-fill text-warning fs-4 me-3 flex-shrink-0 mt-1"></i>
+              <div>
+                <h6 class="fw-semibold mb-1">Giờ mở cửa</h6>
+                <p class="text-muted mb-0">
+                  Thứ 2 - Thứ 6: 08:00 – 22:00<br>
+                  Thứ 7 - Chủ Nhật: 08:00 – 22:00
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Google Maps iframe — Đại học Đại Nam -->
+          <div class="map-wrapper rounded-3 overflow-hidden shadow-sm">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.7!2d105.7675!3d20.9688!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3134539a83a32e5b%3A0x4e7c7f8c7a4a1234!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyDEkOG6oWkgTmFt!5e0!3m2!1svi!2svn!4v1716000000000"
+              width="100%" height="230" style="border:0;" allowfullscreen="" loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Bản đồ Trường Đại học Đại Nam, Hà Đông, Hà Nội">
+            </iframe>
+          </div>
+          <div class="d-flex gap-2 mt-3 flex-wrap">
+            <a href="https://www.google.com/maps/search/?api=1&query=Tr%C6%B0%E1%BB%9Dng%20%C4%90%E1%BA%A1i%20h%E1%BB%8Dc%20%C4%90%E1%BA%A1i%20Nam%20S%E1%BB%91%201%20Ph%E1%BB%91%20X%E1%BB%91m%20Ph%C3%BA%20L%C3%A3m%20H%C3%A0%20%C4%90%C3%B4ng%20H%C3%A0%20N%E1%BB%99i"
+               target="_blank" rel="noopener" class="btn btn-outline-warning btn-sm">
+              <i class="bi bi-map me-1"></i>Xem bản đồ lớn
+            </a>
+            <a href="FoodieMenu/index.html" class="btn btn-warning btn-sm fw-semibold">
+              <i class="bi bi-shop me-1"></i>Đặt món tại FoodieMenu
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer py-5" aria-label="Thông tin footer">
+  <div class="container">
+    <div class="row g-4">
+
+      <!-- Brand + Social -->
+      <div class="col-lg-4 col-md-6">
+        <div class="footer-brand mb-3">
+          <i class="bi bi-egg-fried text-warning me-2 fs-4"></i>
+          <span class="fs-4 fw-bold text-white">FoodieMenu</span>
+        </div>
+        <p class="text-secondary">
+          Nhà hàng ẩm thực Việt Nam chuyên phục vụ các món ăn truyền thống từ nguyên liệu
+          tươi ngon nhất. Hơn 10 năm mang đến hương vị đích thực cho thực khách toàn quốc.
+        </p>
+        <div class="social-links d-flex gap-3 mt-3">
+          <a href="#" class="social-link" aria-label="FoodieMenu trên Facebook">
+            <i class="bi bi-facebook"></i>
+          </a>
+          <a href="#" class="social-link" aria-label="FoodieMenu trên Instagram">
+            <i class="bi bi-instagram"></i>
+          </a>
+          <a href="#" class="social-link" aria-label="FoodieMenu trên YouTube">
+            <i class="bi bi-youtube"></i>
+          </a>
+          <a href="#" class="social-link" aria-label="FoodieMenu trên TikTok">
+            <i class="bi bi-tiktok"></i>
+          </a>
+          <a href="#" class="social-link" aria-label="FoodieMenu trên Zalo">
+            <i class="bi bi-chat-dots-fill"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick links -->
+      <div class="col-lg-2 col-sm-6">
+        <h6 class="footer-heading text-warning mb-3">Điều hướng</h6>
+        <ul class="list-unstyled footer-links">
+          <li><a href="#home"><i class="bi bi-chevron-right me-1"></i>Trang chủ</a></li>
+          <li><a href="#featured"><i class="bi bi-chevron-right me-1"></i>Món nổi bật</a></li>
+          <li><a href="#menu"><i class="bi bi-chevron-right me-1"></i>Thực đơn</a></li>
+          <li><a href="#reviews"><i class="bi bi-chevron-right me-1"></i>Đánh giá</a></li>
+          <li><a href="#contact"><i class="bi bi-chevron-right me-1"></i>Liên hệ</a></li>
+          <li><a href="FoodieMenu/index.html"><i class="bi bi-chevron-right me-1"></i>Đặt bàn</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact details -->
+      <div class="col-lg-3 col-sm-6">
+        <h6 class="footer-heading text-warning mb-3">Liên hệ</h6>
+        <ul class="list-unstyled footer-contact">
+          <li class="mb-2">
+            <i class="bi bi-geo-alt text-warning me-2"></i>
+            Số 1 Phố Xốm, Phú Lãm, Hà Đông, Hà Nội
+          </li>
+          <li class="mb-2">
+            <i class="bi bi-telephone text-warning me-2"></i>
+            <a href="tel:0876785977">0876 785 977</a>
+          </li>
+          <li class="mb-2">
+            <i class="bi bi-envelope text-warning me-2"></i>
+            <a href="mailto:tule2077@gmail.com">tule2077@gmail.com</a>
+          </li>
+          <li class="mb-2">
+            <i class="bi bi-clock text-warning me-2"></i>T2-T6: 08:00 – 22:00
+          </li>
+          <li class="mb-2">
+            <i class="bi bi-clock text-warning me-2"></i>T7-CN: 08:00 – 22:00
+          </li>
+        </ul>
+        <a href="https://www.google.com/maps/search/?api=1&query=Tr%C6%B0%E1%BB%9Dng%20%C4%90%E1%BA%A1i%20h%E1%BB%8Dc%20%C4%90%E1%BA%A1i%20Nam%20S%E1%BB%91%201%20Ph%E1%BB%91%20X%E1%BB%91m%20Ph%C3%BA%20L%C3%A3m%20H%C3%A0%20%C4%90%C3%B4ng%20H%C3%A0%20N%E1%BB%99i"
+           target="_blank" rel="noopener" class="btn btn-outline-warning btn-sm">
+          <i class="bi bi-pin-map me-1"></i>Chỉ đường
+        </a>
+      </div>
+
+      <!-- Payment + App -->
+      <div class="col-lg-3 col-md-6">
+        <h6 class="footer-heading text-warning mb-3">Thanh toán chấp nhận</h6>
+        <div class="payment-methods d-flex flex-wrap gap-2 mb-4">
+          <span class="payment-badge" title="Thẻ Visa">
+            <i class="bi bi-credit-card me-1"></i>Visa
+          </span>
+          <span class="payment-badge" title="Thẻ MasterCard">
+            <i class="bi bi-credit-card-2-front me-1"></i>MasterCard
+          </span>
+          <span class="payment-badge momo" title="Ví MoMo">
+            <i class="bi bi-phone me-1"></i>MoMo
+          </span>
+          <span class="payment-badge zalopay" title="Ví ZaloPay">
+            <i class="bi bi-wallet2 me-1"></i>ZaloPay
+          </span>
+          <span class="payment-badge vnpay" title="Cổng VNPay">
+            <i class="bi bi-qr-code me-1"></i>VNPay
+          </span>
+          <span class="payment-badge cash" title="Tiền mặt">
+            <i class="bi bi-cash-coin me-1"></i>Tiền mặt
+          </span>
+        </div>
+
+        <h6 class="footer-heading text-warning mb-3">Tải ứng dụng</h6>
+        <div class="d-flex flex-column gap-2">
+          <a href="#" class="btn btn-outline-light btn-sm">
+            <i class="bi bi-apple me-2"></i>App Store
+          </a>
+          <a href="#" class="btn btn-outline-light btn-sm">
+            <i class="bi bi-google-play me-2"></i>Google Play
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <hr class="border-secondary mt-4 mb-3">
+    <div class="row align-items-center">
+      <div class="col-md-6 text-center text-md-start">
+        <small class="text-secondary">
+          &copy; 2026 FoodieMenu. Bảo lưu mọi quyền.
+        </small>
+      </div>
+      <div class="col-md-6 text-center text-md-end mt-2 mt-md-0">
+        <small>
+          <a href="#" class="text-secondary text-decoration-none me-3">Chính sách bảo mật</a>
+          <a href="#" class="text-secondary text-decoration-none me-3">Điều khoản</a>
+          <a href="#" class="text-secondary text-decoration-none">Cookie</a>
+        </small>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== LOGIN / REGISTER MODAL ===== -->
+<div class="modal fade" id="loginModal" tabindex="-1"
+     aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" style="max-width:440px">
+    <div class="modal-content border-0 shadow-lg overflow-hidden">
+
+      <!-- Header with tabs -->
+      <div class="modal-header" style="background:linear-gradient(135deg,#1a1a2e 0%,#2a2a4e 100%);border:none;padding:0">
+        <div class="w-100">
+          <ul class="nav nav-pills" id="authTabs" role="tablist"
+              style="padding:16px 20px 0;gap:8px">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active fw-semibold" id="login-tab"
+                      data-bs-toggle="pill" data-bs-target="#login-pane"
+                      type="button" role="tab" aria-controls="login-pane" aria-selected="true"
+                      style="color:rgba(255,255,255,.65);border-radius:8px 8px 0 0;padding:9px 20px">
+                <i class="bi bi-box-arrow-in-right me-1"></i>Đăng nhập
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link fw-semibold" id="register-tab"
+                      data-bs-toggle="pill" data-bs-target="#register-pane"
+                      type="button" role="tab" aria-controls="register-pane" aria-selected="false"
+                      style="color:rgba(255,255,255,.65);border-radius:8px 8px 0 0;padding:9px 20px">
+                <i class="bi bi-person-plus me-1"></i>Đăng ký
+              </button>
+            </li>
+          </ul>
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 mt-2 align-self-start"
+                data-bs-dismiss="modal" aria-label="Đóng"
+                style="position:absolute;top:14px;right:14px;z-index:5"></button>
+      </div>
+
+      <!-- Tab content -->
+      <div class="tab-content" id="authTabsContent">
+
+        <!-- ── Đăng nhập ── -->
+        <div class="tab-pane fade show active" id="login-pane" role="tabpanel" aria-labelledby="login-tab">
+          <div class="modal-body p-4">
+            <h6 class="fw-bold mb-1">Chào mừng trở lại!</h6>
+            <p class="text-muted small mb-3">Đăng nhập để tiếp tục trải nghiệm FoodieMenu.</p>
+            <form id="loginForm" novalidate>
+              <div class="mb-3">
+                <label for="loginEmail" class="form-label fw-semibold small">Email hoặc Số điện thoại</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-person"></i></span>
+                  <input type="text" class="form-control" id="loginEmail"
+                         placeholder="Email hoặc số điện thoại" autocomplete="username" required>
+                </div>
+                <div class="invalid-feedback" id="loginEmailErr"></div>
+              </div>
+              <div class="mb-3">
+                <label for="loginPassword" class="form-label fw-semibold small">Mật khẩu</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                  <input type="password" class="form-control" id="loginPassword"
+                         placeholder="Nhập mật khẩu" autocomplete="current-password" required>
+                  <button class="btn btn-outline-secondary" type="button" id="togglePassword"
+                          aria-label="Hiện/ẩn mật khẩu">
+                    <i class="bi bi-eye" id="eyeIcon"></i>
+                  </button>
+                </div>
+                <div class="invalid-feedback" id="loginPasswordErr"></div>
+              </div>
+              <div class="d-flex justify-content-between mb-3">
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="rememberMe">
+                  <label class="form-check-label small" for="rememberMe">Ghi nhớ đăng nhập</label>
+                </div>
+                <a href="#" class="small text-warning text-decoration-none">Quên mật khẩu?</a>
+              </div>
+              <button type="submit" class="btn btn-warning w-100 fw-semibold" id="loginSubmitBtn">
+                <i class="bi bi-box-arrow-in-right me-1"></i>Đăng nhập
+              </button>
+            </form>
+
+            <div class="divider text-center my-3">
+              <span class="divider-text text-muted small">Hoặc đăng nhập bằng</span>
+            </div>
+            <div class="d-flex gap-2 mb-3">
+              <button class="btn btn-outline-danger flex-fill btn-sm">
+                <i class="bi bi-google me-1"></i>Google
+              </button>
+              <button class="btn btn-outline-primary flex-fill btn-sm">
+                <i class="bi bi-facebook me-1"></i>Facebook
+              </button>
+            </div>
+            <p class="text-center mb-0 small text-muted">
+              Chưa có tài khoản?
+              <a href="#" class="text-warning text-decoration-none fw-semibold" id="goToRegister">Đăng ký ngay</a>
+            </p>
+          </div>
+        </div>
+
+        <!-- ── Đăng ký ── -->
+        <div class="tab-pane fade" id="register-pane" role="tabpanel" aria-labelledby="register-tab">
+          <div class="modal-body p-4">
+            <h6 class="fw-bold mb-1">Tạo tài khoản mới</h6>
+            <p class="text-muted small mb-3">Đăng ký để đặt món và theo dõi lịch sử dễ dàng hơn.</p>
+            <form id="registerForm" novalidate>
+              <div class="mb-2">
+                <label for="regName" class="form-label fw-semibold small">Họ và tên</label>
+                <input type="text" class="form-control" id="regName"
+                       placeholder="Nguyễn Văn A" autocomplete="name" required>
+                <div class="invalid-feedback" id="regNameErr"></div>
+              </div>
+              <div class="mb-2">
+                <label for="regEmail" class="form-label fw-semibold small">Email</label>
+                <input type="email" class="form-control" id="regEmail"
+                       placeholder="email@example.com" autocomplete="email" required>
+                <div class="invalid-feedback" id="regEmailErr"></div>
+              </div>
+              <div class="mb-2">
+                <label for="regPhone" class="form-label fw-semibold small">Số điện thoại</label>
+                <input type="tel" class="form-control" id="regPhone"
+                       placeholder="0876785977" autocomplete="tel">
+                <div class="invalid-feedback" id="regPhoneErr"></div>
+              </div>
+              <div class="mb-2">
+                <label for="regPassword" class="form-label fw-semibold small">Mật khẩu</label>
+                <div class="input-group">
+                  <input type="password" class="form-control" id="regPassword"
+                         placeholder="Ít nhất 6 ký tự" autocomplete="new-password" required>
+                  <button class="btn btn-outline-secondary" type="button" id="toggleRegPassword"
+                          aria-label="Hiện/ẩn mật khẩu">
+                    <i class="bi bi-eye" id="regEyeIcon"></i>
+                  </button>
+                </div>
+                <div class="invalid-feedback" id="regPasswordErr"></div>
+              </div>
+              <div class="mb-2">
+                <label for="regPassword2" class="form-label fw-semibold small">Nhập lại mật khẩu</label>
+                <input type="password" class="form-control" id="regPassword2"
+                       placeholder="Nhập lại mật khẩu" autocomplete="new-password" required>
+                <div class="invalid-feedback" id="regPassword2Err"></div>
+              </div>
+              <div class="mb-3 d-flex align-items-start gap-2">
+                <input type="checkbox" class="form-check-input flex-shrink-0" id="regTerms"
+                       style="margin-top:3px">
+                <label for="regTerms" class="small text-muted">
+                  Tôi đồng ý với <a href="#" class="text-warning text-decoration-none">điều khoản sử dụng</a> của FoodieMenu
+                </label>
+              </div>
+              <div class="invalid-feedback d-block mb-2" id="regTermsErr" style="display:none!important"></div>
+              <button type="submit" class="btn btn-warning w-100 fw-semibold" id="registerSubmitBtn">
+                <i class="bi bi-person-check me-1"></i>Tạo tài khoản
+              </button>
+            </form>
+            <p class="text-center mt-3 mb-0 small text-muted">
+              Đã có tài khoản?
+              <a href="#" class="text-warning text-decoration-none fw-semibold" id="goToLogin">Đăng nhập</a>
+            </p>
+          </div>
+        </div>
+
+      </div><!-- /tab-content -->
+
+      <!-- Auth status chip (shown when logged in) -->
+      <div id="lab10-auth-status" class="d-none px-4 py-3 border-top text-center small text-muted">
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ===== BOOKING CONFIRM MODAL ===== -->
+<div class="modal fade" id="bookingModal" tabindex="-1"
+     aria-labelledby="bookingModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0 bg-warning">
+        <h5 class="modal-title fw-bold" id="bookingModalLabel">
+          <i class="bi bi-check-circle me-2"></i>Xác nhận đặt bàn
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+      </div>
+      <div class="modal-body text-center py-4">
+        <i class="bi bi-check-circle-fill text-success display-3 mb-3 d-block"></i>
+        <h5 class="fw-bold">Đặt bàn thành công!</h5>
+        <p class="text-muted">
+          Thông tin đã được ghi nhận lên hệ thống FoodieMenu.<br>
+          Khi khách đến quán, <strong>nhân viên sẽ hỗ trợ chọn món và order tại bàn</strong>.
+        </p>
+        <div class="booking-details bg-light rounded-3 p-3 text-start mb-3" id="bookingDetails"></div>
+        <p class="text-muted small mb-0">
+          <i class="bi bi-info-circle me-1"></i>
+          Liên hệ <a href="tel:0876785977" class="text-warning fw-semibold text-decoration-none">0876 785 977</a> nếu cần hỗ trợ.
+        </p>
+      </div>
+      <div class="modal-footer border-0 justify-content-center gap-2 flex-wrap">
+        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+          <i class="bi bi-house me-1"></i>Về trang chủ
+        </button>
+        <a href="tel:0876785977" class="btn btn-outline-warning px-4">
+          <i class="bi bi-telephone me-1"></i>Gọi xác nhận
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TOAST (Notification) ===== -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100;">
+  <div id="mainToast" class="toast align-items-center border-0" role="alert" aria-live="assertive">
+    <div class="d-flex">
+      <div class="toast-body fw-semibold" id="toastMessage">
+        Thông báo
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto"
+              data-bs-dismiss="toast" aria-label="Đóng"></button>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap 5 JS Bundle (Popper included) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Custom JS -->
+<script src="js/script.js"></script>
+</body>
+</html>
