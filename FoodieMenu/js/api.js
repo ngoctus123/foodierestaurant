@@ -10,6 +10,28 @@ const STORAGE_KEY = 'fm_products';
 const VERSION_KEY = 'fm_products_version';
 const DATA_VERSION = 3; // tăng số này mỗi khi thay đổi schema/danh mục DEFAULT_PRODUCTS
 
+// ── Cấu hình API online (MockAPI) ─────────────────────
+// Món ăn (products) giờ đọc/ghi trực tiếp từ server MockAPI qua fetch thật.
+// Đổi URL này nếu bạn tạo project MockAPI khác.
+const API_BASE = 'https://6a476ecdabfcbaade11866bc.mockapi.io/api/v1';
+
+// Chuẩn hóa 1 món trả về từ MockAPI: ép id/price về kiểu số cho khớp phần còn lại của app
+function _normalizeProduct(p) {
+  return {
+    ...p,
+    id:          Number(p.id),
+    name:        String(p.name || ''),
+    price:       Math.max(0, Number(p.price) || 0),
+    category:    String(p.category || ''),
+    description: String(p.description || ''),
+    detail:      p.detail ? String(p.detail) : '',
+    ingredients: p.ingredients ? String(p.ingredients) : '',
+    image:       String(p.image || ''),
+    available:   Boolean(p.available),
+    tags:        Array.isArray(p.tags) ? p.tags.map(String) : [],
+  };
+}
+
 const DEFAULT_PRODUCTS = [
   // ── KHAI VỊ ──────────────────────────────────────────
   {
@@ -556,9 +578,13 @@ const API = {
    * @returns {Promise<Array>}
    */
   getProducts(filters = {}) {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        let data = _getData();
+    return fetch(`${API_BASE}/products`)
+      .then(res => {
+        if (!res.ok) throw new Error('Không tải được danh sách món ăn');
+        return res.json();
+      })
+      .then(list => {
+        let data = (Array.isArray(list) ? list : []).map(_normalizeProduct);
         if (filters.category && filters.category !== 'Tất cả') {
           data = data.filter(p => p.category === filters.category);
         }
@@ -569,9 +595,8 @@ const API = {
             (p.description || '').toLowerCase().includes(q)
           );
         }
-        resolve(data);
-      }, 80);
-    });
+        return data;
+      });
   },
 
   /**
@@ -579,12 +604,12 @@ const API = {
    * @returns {Promise<Object>}
    */
   getProduct(id) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const product = _getData().find(p => p.id === Number(id));
-        product ? resolve(product) : reject(new Error('Không tìm thấy món ăn'));
-      }, 80);
-    });
+    return fetch(`${API_BASE}/products/${id}`)
+      .then(res => {
+        if (!res.ok) throw new Error('Không tìm thấy món ăn');
+        return res.json();
+      })
+      .then(_normalizeProduct);
   },
 
   /**
@@ -592,24 +617,28 @@ const API = {
    * @returns {Promise<Object>}
    */
   createProduct(data) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        try {
-          const products = _getData();
-          const newProduct = {
-            ...data,
-            id: Date.now(),
-            price: Number(data.price),
-            available: data.available !== undefined ? Boolean(data.available) : true,
-            tags: Array.isArray(data.tags) ? data.tags : [],
-          };
-          _setData([...products, newProduct]);
-          resolve(newProduct);
-        } catch (e) {
-          reject(new Error('Lỗi khi thêm món ăn'));
-        }
-      }, 150);
-    });
+    const body = {
+      name:        data.name,
+      price:       Number(data.price),
+      category:    data.category,
+      image:       data.image,
+      description: data.description || '',
+      detail:      data.detail || '',
+      ingredients: data.ingredients || '',
+      available:   data.available !== undefined ? Boolean(data.available) : true,
+      tags:        Array.isArray(data.tags) ? data.tags : [],
+    };
+    // id do MockAPI tự sinh, không gửi kèm
+    return fetch(`${API_BASE}/products`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Lỗi khi thêm món ăn');
+        return res.json();
+      })
+      .then(_normalizeProduct);
   },
 
   /**
@@ -617,23 +646,20 @@ const API = {
    * @returns {Promise<Object>}
    */
   updateProduct(id, data) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const products = _getData();
-        const idx = products.findIndex(p => p.id === Number(id));
-        if (idx === -1) { reject(new Error('Không tìm thấy món ăn')); return; }
-        const updated = {
-          ...products[idx],
-          ...data,
-          id: Number(id),
-          price: Number(data.price ?? products[idx].price),
-          tags: Array.isArray(data.tags) ? data.tags : (products[idx].tags || []),
-        };
-        products[idx] = updated;
-        _setData(products);
-        resolve(updated);
-      }, 150);
-    });
+    const body = { ...data };
+    delete body.id; // không cho phép đổi id
+    if (body.price !== undefined) body.price = Number(body.price);
+    if (body.tags !== undefined && !Array.isArray(body.tags)) body.tags = [];
+    return fetch(`${API_BASE}/products/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Không tìm thấy món ăn');
+        return res.json();
+      })
+      .then(_normalizeProduct);
   },
 
   /**
@@ -641,24 +667,34 @@ const API = {
    * @returns {Promise<{ success: true, id: number }>}
    */
   deleteProduct(id) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const products = _getData();
-        const filtered = products.filter(p => p.id !== Number(id));
-        if (filtered.length === products.length) {
-          reject(new Error('Không tìm thấy món ăn'));
-          return;
-        }
-        _setData(filtered);
-        resolve({ success: true, id: Number(id) });
-      }, 150);
-    });
+    return fetch(`${API_BASE}/products/${id}`, { method: 'DELETE' })
+      .then(res => {
+        if (!res.ok) throw new Error('Không tìm thấy món ăn');
+        return { success: true, id: Number(id) };
+      });
   },
 
-  /** Reset về dữ liệu mặc định */
-  resetData() {
-    _seedDefaults();
-    return Promise.resolve(structuredClone(DEFAULT_PRODUCTS));
+  /**
+   * Reset về dữ liệu mặc định — xóa toàn bộ món trên server rồi nạp lại DEFAULT_PRODUCTS.
+   * Lưu ý: chạy nhiều request tuần tự, có thể chậm nếu MockAPI giới hạn tốc độ.
+   */
+  async resetData() {
+    const res  = await fetch(`${API_BASE}/products`);
+    const list = res.ok ? await res.json() : [];
+    for (const p of list) {
+      await fetch(`${API_BASE}/products/${p.id}`, { method: 'DELETE' });
+      await new Promise(r => setTimeout(r, 150));
+    }
+    for (const p of DEFAULT_PRODUCTS) {
+      const { id, ...body } = p;
+      await fetch(`${API_BASE}/products`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      await new Promise(r => setTimeout(r, 150));
+    }
+    return this.getProducts();
   },
 
   /** Trả về version hiện tại (để admin hiển thị) */
